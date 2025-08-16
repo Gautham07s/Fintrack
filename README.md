@@ -52,17 +52,11 @@ FinTrack/
 │   │── categories.html        # Categories management
 │   │── dashboard.html         # Income/expense summary view
 │
-├── static/                    # CSS, JS, images
+├── static/                    # CSS, JS
 │   ├── css/
 │   │   └── styles.css         # Custom styles
 │   ├── js/
 │   │   └── scripts.js         # (Optional) Custom JS
-│   └── images/
-│       └── logo.png           # App logo (optional)
-│
-├── screenshots/               # For README
-│   ├── dashboard.png
-│   └── transactions.png
 │
 └── README.md                  # Project documentation
 ```
