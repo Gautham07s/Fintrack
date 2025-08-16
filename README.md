@@ -1,6 +1,7 @@
 # 💸 FinTrack - Personal Finance Tracker
 
-A simple yet powerful **Flask-based web application** that helps you track your **income, expenses, and categories** with ease.  
+**FinTrack is a personal finance management web application built with Flask.**
+**It allows users to track income and expenses, manage categories, and visualize their financial data through interactive dashboards.** 
 This project provides an **intuitive dashboard, modern UI, and seamless transaction management** to keep your finances organized.
 
 ---
