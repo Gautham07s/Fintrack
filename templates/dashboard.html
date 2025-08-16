@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h3 class="mb-4">Dashboard</h3>
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="card card-metric"><div class="card-body">
+      <div class="label">Total Income</div>
+      <div class="value">₹{{ '%.2f'|format(income) }}</div>
+    </div></div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-metric"><div class="card-body">
+      <div class="label">Total Expense</div>
+      <div class="value">₹{{ '%.2f'|format(expense) }}</div>
+    </div></div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-metric"><div class="card-body">
+      <div class="label">Balance</div>
+      <div class="value">₹{{ '%.2f'|format(balance) }}</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card h-100"><div class="card-body">
+      <h6 class="mb-3">Spending by Category</h6>
+      <canvas id="pieChart" data-labels='{{ cat_labels|tojson }}' data-values='{{ cat_values|tojson }}'></canvas>
+    </div></div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card h-100"><div class="card-body">
+      <h6 class="mb-3">Monthly Expense Trend</h6>
+      <canvas id="lineChart" data-labels='{{ trend_labels|tojson }}' data-values='{{ trend_values|tojson }}'></canvas>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

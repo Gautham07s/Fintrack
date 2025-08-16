@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="row">
+        <!-- Add Transaction Form -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    Add Transaction
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('transactions.index') }}">
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Type</label>
+                            <select name="type" id="type" class="form-select" required>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount</label>
+                            <input type="number" step="0.01" name="amount" id="amount" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <input type="text" name="description" id="description" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" name="date" id="date" class="form-control" 
+                                   value="{{ today.isoformat() }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="category_id" class="form-label">Category</label>
+                            <select name="category_id" id="category_id" class="form-select">
+                                <option value="">-- None --</option>
+                                {% for c in categories %}
+                                    <option value="{{ c.id }}">{{ c.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions Table -->
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    Transactions
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tx in transactions %}
+                            <tr>
+                                <td>{{ tx.date.strftime("%Y-%m-%d") }}</td>
+                                <td>
+                                    {% if tx.type == "income" %}
+                                        <span class="badge bg-success">Income</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Expense</span>
+                                    {% endif %}
+                                </td>
+                                <td>₹ {{ "%.2f"|format(tx.amount) }}</td>
+                                <td>{{ tx.description }}</td>
+                                <td>{{ tx.category.name if tx.category else "-" }}</td>
+                                <td class="text-end">
+                                    <!-- Edit Form -->
+                                    <form method="POST" action="{{ url_for('transactions.edit', tx_id=tx.id) }}" class="d-inline">
+                                        <input type="hidden" name="type" value="{{ tx.type }}">
+                                        <input type="hidden" name="amount" value="{{ tx.amount }}">
+                                        <input type="hidden" name="description" value="{{ tx.description }}">
+                                        <input type="hidden" name="date" value="{{ tx.date.strftime('%Y-%m-%d') }}">
+                                        <input type="hidden" name="category_id" value="{{ tx.category_id }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-primary">Edit</button>
+                                    </form>
+                                    <!-- Delete Form -->
+                                    <form method="POST" action="{{ url_for('transactions.delete', tx_id=tx.id) }}" class="d-inline" 
+                                          onsubmit="return confirm('Are you sure you want to delete this transaction?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">No transactions yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
